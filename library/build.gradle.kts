@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,8 +8,12 @@ plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
-group = "io.github.kotlin"
-version = "1.0.0"
+val versionProperties = Properties()
+val versionPropertiesFile = rootDir.resolve("version.properties")
+versionPropertiesFile.takeIf { it.exists() }?.inputStream()?.use { versionProperties.load(it) }
+
+group = "io.voxkit"
+version = versionProperties["version"] ?: "0.0.0"
 
 kotlin {
     jvm()
